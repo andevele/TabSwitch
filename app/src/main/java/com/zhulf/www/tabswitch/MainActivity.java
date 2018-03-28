@@ -49,16 +49,17 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        Log.i("zhulf","===============================positionOffset: " + positionOffset
+        + " position: " + position);
     }
 
     @Override
     public void onPageSelected(int position) {
-        Log.i("zhulf","==============position: " + position);
+        Log.i("zhulf","========================position: " + position);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        Log.i("zhulf","==============state: " + state);
     }
 }
