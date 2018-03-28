@@ -8,6 +8,7 @@
     <include layout="@layout/top_bar" />
 
     <com.zhulf.www.tabswitch.CustomViewpager
+        android:id="@+id/viewpager_id"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
