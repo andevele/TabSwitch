@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private List<PagerFragment> fragmentList = new ArrayList<>();
 
     @Bind(R.id.viewpager_id)
-    CustomViewpager viewpager;
+    ViewPager viewPager;
 
     //@Bind(R.array.TabTitleArray)
     //String[] tabTitles;
@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             fragmentList.add(fragment);
         }
         adapter = new PagerAdapter(getSupportFragmentManager(),fragmentList);
-        viewpager.setAdapter(adapter);
-        viewpager.addOnPageChangeListener(this);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override

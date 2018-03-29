@@ -7,7 +7,7 @@
 
     <include layout="@layout/top_bar" />
 
-    <com.zhulf.www.tabswitch.CustomViewpager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_id"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -19,7 +19,7 @@
         android:background="@drawable/tab_background"
         android:orientation="horizontal">
 
-        <com.zhulf.www.tabswitch.CustomViewpager
+        <com.zhulf.www.tabswitch.CustomView
             android:id="@+id/tab_weixin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
             app:image="@mipmap/weixin"
             app:text="微信" />
 
-        <com.zhulf.www.tabswitch.CustomViewpager
+        <com.zhulf.www.tabswitch.CustomView
             android:id="@+id/tab_address_book"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -35,7 +35,7 @@
             app:image="@mipmap/address_book"
             app:text="通讯录" />
 
-        <com.zhulf.www.tabswitch.CustomViewpager
+        <com.zhulf.www.tabswitch.CustomView
             android:id="@+id/tab_discover"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -43,7 +43,7 @@
             app:image="@mipmap/discover"
             app:text="发现" />
 
-        <com.zhulf.www.tabswitch.CustomViewpager
+        <com.zhulf.www.tabswitch.CustomView
             android:id="@+id/tab_me"
             android:layout_width="0dp"
             android:layout_height="match_parent"
