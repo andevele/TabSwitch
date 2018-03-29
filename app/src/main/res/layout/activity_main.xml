@@ -24,6 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="5dp"
             app:image="@mipmap/weixin"
             app:text="微信" />
 
@@ -32,6 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="5dp"
             app:image="@mipmap/address_book"
             app:text="通讯录" />
 
@@ -40,6 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="5dp"
             app:image="@mipmap/discover"
             app:text="发现" />
 
@@ -48,6 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="5dp"
             app:image="@mipmap/me"
             app:text="我" />
 
