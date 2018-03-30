@@ -1,38 +1,30 @@
 package com.zhulf.www.tabswitch;
 
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private static final String TABTITLE_KEY = "tabtitle_key";
-    private List<PagerFragment> fragmentList = new ArrayList<>();
-    private PagerAdapter adapter;
-
     @Bind(R.id.viewpager_id)
     ViewPager viewPager;
-
     @Bind(R.id.tab_weixin)
     CustomView tabHomeView;
-
     @Bind(R.id.tab_contacts)
     CustomView tabContactsView;
-
     @Bind(R.id.tab_discover)
     CustomView tabDiscoverView;
-
     @Bind(R.id.tab_me)
     CustomView tabMeView;
-
+    private List<PagerFragment> fragmentList = new ArrayList<>();
+    private PagerAdapter adapter;
+    private List<CustomView> tabList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     }
 
     private void initTabs() {
+        tabList.add(tabHomeView);
+        tabList.add(tabContactsView);
+        tabList.add(tabDiscoverView);
+        tabList.add(tabMeView);
+
         tabHomeView.setOnClickListener(this);
         tabContactsView.setOnClickListener(this);
         tabDiscoverView.setOnClickListener(this);
@@ -73,40 +70,49 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.i("zhulf", "===============================positionOffset: " + positionOffset
-                + " position: " + position);
+//        Log.i("zhulf", "===============================positionOffset: " + positionOffset
+//                + " position: " + position);
         //viewPager.setTabAlpha(positionOffset);
+        if (positionOffset > 0) {
+            tabList.get(position).setTabAlpha(1 - positionOffset);
+            tabList.get(position + 1).setTabAlpha(positionOffset);
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
-        Log.i("zhulf", "========================position: " + position);
+//        Log.i("zhulf", "========================position: " + position);
+        if (position == 2) {
+            tabList.get(position).setTabImage(this, R.mipmap.discover_green);
+        } else {
+            tabList.get(2).setTabImage(this, R.mipmap.discover);
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.i("zhulf", "==============state: " + state);
+//        Log.i("zhulf", "==============state: " + state);
     }
 
     @Override
     public void onClick(View v) {
         resetTabs();
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.tab_weixin:
                 tabHomeView.setTabAlpha(1.0f);
-                viewPager.setCurrentItem(0,false);
+                viewPager.setCurrentItem(0, false);
                 break;
             case R.id.tab_contacts:
                 tabContactsView.setTabAlpha(1.0f);
-                viewPager.setCurrentItem(1,false);
+                viewPager.setCurrentItem(1, false);
                 break;
             case R.id.tab_discover:
                 tabDiscoverView.setTabAlpha(1.0f);
-                viewPager.setCurrentItem(2,false);
+                viewPager.setCurrentItem(2, false);
                 break;
             case R.id.tab_me:
                 tabMeView.setTabAlpha(1.0f);
-                viewPager.setCurrentItem(3,false);
+                viewPager.setCurrentItem(3, false);
                 break;
 
             default:
@@ -115,11 +121,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     }
 
     private void resetTabs() {
-        tabHomeView.setTabAlpha(0.0f);
-        tabContactsView.setTabAlpha(0.0f);
-        tabDiscoverView.setTabAlpha(0.0f);
-        tabMeView.setTabAlpha(0.0f);
+        for (CustomView view : tabList) {
+            view.setTabAlpha(0.0f);
+        }
     }
-
 
 }
