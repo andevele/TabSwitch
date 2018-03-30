@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/tab_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="2dp">
 
         <com.zhulf.www.tabswitch.CustomView
             android:id="@+id/tab_weixin"
@@ -29,7 +30,7 @@
             app:text="微信" />
 
         <com.zhulf.www.tabswitch.CustomView
-            android:id="@+id/tab_address_book"
+            android:id="@+id/tab_contacts"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

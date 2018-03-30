@@ -3,6 +3,7 @@ package com.zhulf.www.tabswitch;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,7 +32,8 @@ public class CustomView extends View {
     private Bitmap tabBitmap;
     private String tabTitle;
     private Rect tabImageRect;
-    private float mAlpha = 1.0f;
+    private float mAlpha;
+    private Bitmap targetBitmap;
 
     public CustomView(Context context) {
         super(context);
@@ -68,11 +71,6 @@ public class CustomView extends View {
         tabTextBounds = new Rect();
         tabTextPaint.getTextBounds(tabTitle, 0, tabTitle.length(), tabTextBounds);
 
-        targetPaint = new Paint();
-        targetPaint.setColor(targetColor);
-        targetPaint.setAntiAlias(true);
-        targetPaint.setDither(true);
-
     }
 
     @Override
@@ -92,34 +90,54 @@ public class CustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         int alphaValue = getIntAlphaValue(mAlpha);
-        drawTabImage(canvas,alphaValue);
-        drawTabText(canvas,alphaValue);
-    }
-
-    private void drawTabImage(Canvas canvas, int alphaValue) {
         canvas.drawBitmap(tabBitmap, null, tabImageRect, null);
-
-        Bitmap targetBitmap = Bitmap.createBitmap(getMeasuredWidth(),getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas targetCanvas = new Canvas(targetBitmap);
-
-        targetPaint.setAlpha(alphaValue);
-        targetCanvas.drawRect(tabImageRect,targetPaint);
-
-        targetPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        targetPaint.setAlpha(255);
-        targetCanvas.drawBitmap(tabBitmap,null,tabImageRect,targetPaint);
-
+        drawXfermodeTabImage(alphaValue);
+        drawInitialTabText(canvas,alphaValue);
+        drawFinalTabText(canvas,alphaValue);
         canvas.drawBitmap(targetBitmap,0,0,null);
-
     }
 
-    private void drawTabText(Canvas canvas, int alphaValue) {
+    private void drawXfermodeTabImage(int alphaValue) {
+        targetBitmap = Bitmap.createBitmap(getMeasuredWidth(),getMeasuredHeight(), Config.ARGB_8888);
+        Canvas targetCanvas = new Canvas(targetBitmap);
+        Paint paint = new Paint();
+        paint.setColor(targetColor);
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setAlpha(alphaValue);
+        targetCanvas.drawRect(tabImageRect,paint);
 
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        paint.setAlpha(255);
+        targetCanvas.drawBitmap(tabBitmap,null,tabImageRect,paint);
     }
 
-    public void setTabImageAlpha(float alpha) {
+    private void drawInitialTabText(Canvas canvas, int alphaValue) {
+        tabTextPaint.setColor(DEFAULT_TEXT_COLOR);
+        tabTextPaint.setAlpha(255 - alphaValue);
+        canvas.drawText(tabTitle,tabImageRect.left + tabImageRect.width() / 2 - tabTextBounds.width() / 2,
+                tabImageRect.bottom + tabTextBounds.height(),tabTextPaint);
+    }
+
+    private void drawFinalTabText(Canvas canvas, int alphaValue) {
+        tabTextPaint.setColor(targetColor);
+        tabTextPaint.setAlpha(alphaValue);
+        canvas.drawText(tabTitle,tabImageRect.left + tabImageRect.width() / 2 - tabTextBounds.width() / 2,
+                tabImageRect.bottom + tabTextBounds.height(),tabTextPaint);
+    }
+
+    public void setTabAlpha(float alpha) {
         if(mAlpha != alpha) {
             mAlpha = alpha;
+            invalidate();
+        }
+    }
+
+    private void invalidateView() {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
+            invalidate();
+        } else {
+            postInvalidate();
         }
     }
 
